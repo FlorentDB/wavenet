@@ -31,9 +31,9 @@ def test_causality():
     random_future = random_future.permute(0, 2, 1)  # [1, 256, future_len]
     print(random_future)
     x2[:, :, t+1:] = random_future
-
-    y1 = model(x1)
-    y2 = model(x2)
+    with torch.no_grad():
+        y1 = model(x1)
+        y2 = model(x2)
 
     diff = (y1[:, :, :t+1] - y2[:, :, :t+1]).abs().max().item()
     print(diff)
